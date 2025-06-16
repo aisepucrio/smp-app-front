@@ -9,10 +9,10 @@ import {
     StyleSheet,
     KeyboardAvoidingView,
     Platform,
+    Alert,
 } from "react-native";
 import Svg, {Path} from "react-native-svg";
 import {Eye, EyeOff, Mail, LockKeyhole, ArrowRight, AlertTriangle} from "lucide-react-native";
-import {Ionicons} from "@expo/vector-icons";
 import {useAuth} from "../contexts/AuthContext";
 
 export default function RegisterScreen({navigation}: any) {
@@ -32,7 +32,8 @@ export default function RegisterScreen({navigation}: any) {
         try {
             setLoading(true);
             await register(email, email.split("@")[0], password);
-        } catch {
+        } catch (err: any) {
+            Alert.alert('Registration failed', err.message);
         } finally {
             setLoading(false);
         }

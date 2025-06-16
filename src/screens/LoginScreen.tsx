@@ -27,7 +27,7 @@ export default function LoginScreen({navigation}: any) {
             setLoading(true);
             await login(email, password);
         } catch (err: any) {
-            Alert.alert("Login failed", err?.response?.data?.errorCode || err.message);
+            Alert.alert('Login failed', err.message);
         } finally {
             setLoading(false);
         }

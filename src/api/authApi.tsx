@@ -1,41 +1,40 @@
-import axios, { AxiosInstance } from 'axios';
-import Constants from 'expo-constants';
-import { Platform } from 'react-native';
+import { apiClient, digestAxiosError } from './apiClient';
 import { TokenResponseDto, UserProfileDto } from '../auth/types';
-
-function getBaseURL(): string {
-    const envURL = Constants?.expoConfig?.extra?.apiBase as string | undefined;
-    if (envURL) return envURL;
-    if (__DEV__) {
-        if (Platform.OS === 'android') return 'http://10.0.2.2:5000';
-        return 'http://localhost:5000';
-    }
-    return 'https://api.buddyments.com';
-}
-
-const api: AxiosInstance = axios.create({
-    baseURL: `${getBaseURL()}/api/auth`,
-    headers: { 'Content-Type': 'application/json' },
-});
 
 const authApi = {
     async login(email: string, password: string): Promise<TokenResponseDto> {
-        const { data } = await api.post<TokenResponseDto>('/login', { email, password });
-        return data;
+        try {
+            const { data } = await apiClient.post<TokenResponseDto>('/auth/login', { email, password });
+            return data;
+        } catch (err) {
+            throw digestAxiosError(err);
+        }
     },
     async register(email: string, userName: string, password: string): Promise<TokenResponseDto> {
-        const { data } = await api.post<TokenResponseDto>('/register', { email, userName, password });
-        return data;
+        try {
+            const { data } = await apiClient.post<TokenResponseDto>('/auth/register', { email, userName, password });
+            return data;
+        } catch (err) {
+            throw digestAxiosError(err);
+        }
     },
     async refreshToken(refreshToken: string): Promise<TokenResponseDto> {
-        const { data } = await api.post<TokenResponseDto>('/refresh', { refreshToken });
-        return data;
+        try {
+            const { data } = await apiClient.post<TokenResponseDto>('/auth/refresh', { refreshToken });
+            return data;
+        } catch (err) {
+            throw digestAxiosError(err);
+        }
     },
     async getProfile(accessToken: string): Promise<UserProfileDto> {
-        const { data } = await api.get<UserProfileDto>('/profile', {
-            headers: { Authorization: `Bearer ${accessToken}` },
-        });
-        return data;
+        try {
+            const { data } = await apiClient.get<UserProfileDto>('/auth/profile', {
+                headers: { Authorization: `Bearer ${accessToken}` },
+            });
+            return data;
+        } catch (err) {
+            throw digestAxiosError(err);
+        }
     },
 };
 
