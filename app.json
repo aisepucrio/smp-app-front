@@ -2,7 +2,7 @@
   "expo": {
     "name": "smp-app-front",
     "slug": "smp-app-front",
-    "entryPoint": "./src/App.tsx",
+    "entryPoint": "./App.tsx",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

@@ -16,6 +16,14 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npx expo start
    ```
 
+3. Lint the code (optional)
+
+   ```bash
+   npm run lint
+   ```
+
+   This command runs `npx expo lint` so you don't need a globally installed Expo CLI.
+
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
