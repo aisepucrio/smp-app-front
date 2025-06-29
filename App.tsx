@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import LoadingScreen from './src/screens/LoadingScreen';
 
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 import MainTabs from './src/navigation/MainTabs';
@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 function AuthStack() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
+        <Stack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Register" component={RegisterScreen} />
@@ -24,12 +24,21 @@ function AuthStack() {
 function RootNavigator() {
     const { user, loading } = useAuth();
 
-    if (loading) {
-        return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <ActivityIndicator />
-            </View>
-        );
+    const startRef = useRef(Date.now());
+    const [splashDone, setSplashDone] = useState(false);
+
+    useEffect(() => {
+        if (!loading && !splashDone) {
+            const elapsed = Date.now() - startRef.current;
+            const cycleMs = 2000;
+            const remaining = cycleMs - (elapsed % cycleMs);
+            const timer = setTimeout(() => setSplashDone(true), remaining);
+            return () => clearTimeout(timer);
+        }
+    }, [loading, splashDone]);
+
+    if (loading || !splashDone) {
+        return <LoadingScreen />;
     }
 
     return (
