@@ -3,8 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useCallback } from "react";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
-  SafeAreaView,
-  useSafeAreaInsets,
+    SafeAreaView,
+    useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
 import { ThemedText } from "@/components/ThemedText";
@@ -67,9 +67,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             style={[styles.createCard, { borderColor: Colors[theme].tint }]}
             activeOpacity={0.9}
-            onPress={() => {
-              // TODO navigate to CreateTeam screen
-            }}
+            onPress={() => navigation.navigate("CreateTeam")}
           >
             <Ionicons name="add" size={32} color={Colors[theme].tint} />
             <ThemedText

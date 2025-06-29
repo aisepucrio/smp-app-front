@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import CreateTeamScreen from "../screens/CreateTeamScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 
@@ -45,6 +46,14 @@ export default function MainTabs() {
       <Tab.Screen
         name="Settings"
         component={SettingsScreen}
+        options={{
+          tabBarStyle: { display: "none" },
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="CreateTeam"
+        component={CreateTeamScreen}
         options={{
           tabBarStyle: { display: "none" },
           tabBarButton: () => null,

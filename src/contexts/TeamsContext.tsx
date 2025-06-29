@@ -7,7 +7,7 @@ interface TeamsContextValue {
   teams: TeamDto[];
   loading: boolean;
   refresh: () => Promise<void>;
-  createTeam: (payload: CreateTeamDto) => Promise<void>;
+  createTeam: (payload: CreateTeamDto) => Promise<TeamDto>;
 }
 
 const TeamsContext = createContext<TeamsContextValue | undefined>(undefined);
@@ -37,10 +37,11 @@ export const TeamsProvider: React.FC<{ children: React.ReactNode }> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
-  const createTeam = async (payload: CreateTeamDto) => {
-    if (!accessToken) return;
-    await teamsApi.createTeam(accessToken, payload);
+  const createTeam = async (payload: CreateTeamDto): Promise<TeamDto> => {
+    if (!accessToken) throw new Error("No access token");
+    const team = await teamsApi.createTeam(accessToken, payload);
     await fetchTeams();
+    return team;
   };
 
   return (
