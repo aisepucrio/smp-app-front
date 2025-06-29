@@ -1,18 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
+    Alert,
+    Image,
     SafeAreaView,
-    View,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    Image,
-    StyleSheet,
-    Alert,
+    View,
 } from "react-native";
-import Svg, {Path} from "react-native-svg";
-import {Eye, EyeOff, Mail, LockKeyhole, ArrowRight} from "lucide-react-native";
-import {Ionicons} from "@expo/vector-icons";
-import {useAuth} from "../contexts/AuthContext";
+
+import { Ionicons } from "@expo/vector-icons";
+import { ArrowRight, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react-native";
+import Svg, { Path } from "react-native-svg";
+import KeyboardDismissableScrollView from "../../components/KeyboardDismissableScrollView";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginScreen({navigation}: any) {
     const {login} = useAuth();
@@ -35,77 +37,79 @@ export default function LoginScreen({navigation}: any) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Svg width="100%" height="100%" viewBox="0 5 390 10" style={styles.headerSvg}>
-                    <Path d="M0 0 H390 V110 Q187.5 180 0 110 Z" fill="#6770E6"/>
-                </Svg>
-                <View style={styles.headerImageWrapper}>
-                    <Image source={require("../assets/owl.png")} style={styles.headerImage} resizeMode="contain"/>
-                </View>
-            </View>
-
-            <View style={styles.body}>
-                <Text style={styles.title}>
-                    Sign In{"\n"}
-                    <Text style={styles.titleBold}>BuddyMents</Text>
-                </Text>
-
-                <Text style={styles.label}>Email Address</Text>
-                <View style={styles.inputContainer}>
-                    <Mail size={18} stroke="#6770E6"/>
-                    <TextInput
-                        placeholder="you@example.com"
-                        placeholderTextColor="#9CA3AF"
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                        style={styles.input}
-                        value={email}
-                        onChangeText={setEmail}
-                    />
+            <KeyboardDismissableScrollView contentContainerStyle={styles.scrollView}>
+                <View style={styles.header}>
+                    <Svg width="100%" height="100%" viewBox="0 5 390 10" style={styles.headerSvg}>
+                        <Path d="M0 0 H390 V110 Q187.5 180 0 110 Z" fill="#6770E6"/>
+                    </Svg>
+                    <View style={styles.headerImageWrapper}>
+                        <Image source={require("../assets/owl.png")} style={styles.headerImage} resizeMode="contain"/>
+                    </View>
                 </View>
 
-                <Text style={[styles.label, {marginTop: 16}]}>Password</Text>
-                <View style={styles.inputContainer}>
-                    <LockKeyhole size={18} stroke="#6770E6"/>
-                    <TextInput
-                        placeholder="Enter your password…"
-                        placeholderTextColor="#9CA3AF"
-                        secureTextEntry={secure}
-                        autoCapitalize="none"
-                        style={styles.input}
-                        value={password}
-                        onChangeText={setPassword}
-                    />
-                    <TouchableOpacity onPress={() => setSecure(!secure)}>
-                        {secure ? <EyeOff size={18} stroke="#C4C4C4"/> : <Eye size={18} stroke="#C4C4C4"/>}
-                    </TouchableOpacity>
-                </View>
-
-                <TouchableOpacity style={styles.signInButton} activeOpacity={0.8} onPress={handleSignIn}
-                                  disabled={loading}>
-                    <Text style={styles.signInButtonText}>{loading ? "Signing…" : "Sign In"}</Text>
-                    <ArrowRight size={20} color="#fff" style={{marginLeft: 8}}/>
-                </TouchableOpacity>
-
-                <View style={styles.socialRow}>
-                    <TouchableOpacity style={styles.socialIconWrapper} activeOpacity={0.75}>
-                        <Ionicons name="logo-google" size={22} color="#6770E6"/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.socialIconWrapper} activeOpacity={0.75}>
-                        <Ionicons name="logo-microsoft" size={22} color="#6770E6"/>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={styles.footer}>
-                    <Text style={styles.footerText}>
-                        Don’t have an account? <Text style={styles.footerLink}
-                                                     onPress={() => navigation.navigate("Register")}>Sign Up.</Text>
+                <View style={styles.body}>
+                    <Text style={styles.title}>
+                        Sign In{"\n"}
+                        <Text style={styles.titleBold}>BuddyMents</Text>
                     </Text>
-                    <TouchableOpacity>
-                        <Text style={styles.forgotPassword}>Forgot Password</Text>
+
+                    <Text style={styles.label}>Email Address</Text>
+                    <View style={styles.inputContainer}>
+                        <Mail size={18} stroke="#6770E6"/>
+                        <TextInput
+                            placeholder="you@example.com"
+                            placeholderTextColor="#9CA3AF"
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                            style={styles.input}
+                            value={email}
+                            onChangeText={setEmail}
+                        />
+                    </View>
+
+                    <Text style={[styles.label, {marginTop: 16}]}>Password</Text>
+                    <View style={styles.inputContainer}>
+                        <LockKeyhole size={18} stroke="#6770E6"/>
+                        <TextInput
+                            placeholder="Enter your password…"
+                            placeholderTextColor="#9CA3AF"
+                            secureTextEntry={secure}
+                            autoCapitalize="none"
+                            style={styles.input}
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+                        <TouchableOpacity onPress={() => setSecure(!secure)}>
+                            {secure ? <EyeOff size={18} stroke="#C4C4C4"/> : <Eye size={18} stroke="#C4C4C4"/>}
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.signInButton} activeOpacity={0.8} onPress={handleSignIn}
+                                      disabled={loading}>
+                        <Text style={styles.signInButtonText}>{loading ? "Signing…" : "Sign In"}</Text>
+                        <ArrowRight size={20} color="#fff" style={{marginLeft: 8}}/>
                     </TouchableOpacity>
+
+                    <View style={styles.socialRow}>
+                        <TouchableOpacity style={styles.socialIconWrapper} activeOpacity={0.75}>
+                            <Ionicons name="logo-google" size={22} color="#6770E6"/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.socialIconWrapper} activeOpacity={0.75}>
+                            <Ionicons name="logo-microsoft" size={22} color="#6770E6"/>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.footer}>
+                        <Text style={styles.footerText}>
+                            Don't have an account? <Text style={styles.footerLink}
+                                                         onPress={() => navigation.navigate("Register")}>Sign Up.</Text>
+                        </Text>
+                        <TouchableOpacity>
+                            <Text style={styles.forgotPassword}>Forgot Password</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </KeyboardDismissableScrollView>
         </SafeAreaView>
     );
 }
@@ -167,4 +171,7 @@ const styles = StyleSheet.create({
     footerText: {fontSize: 14, color: "#111827"},
     footerLink: {fontWeight: "600", color: "#6770E6"},
     forgotPassword: {marginTop: 4, fontSize: 14, color: "#F47171"},
+    scrollView: {
+        flexGrow: 1,
+    },
 });

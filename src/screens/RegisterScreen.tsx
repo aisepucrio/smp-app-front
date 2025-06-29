@@ -1,19 +1,18 @@
-import React, {useState} from "react";
+import { AlertTriangle, ArrowRight, Eye, EyeOff, LockKeyhole, Mail } from "lucide-react-native";
+import React, { useState } from "react";
 import {
+    Alert,
+    Image,
     SafeAreaView,
-    View,
+    StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
-    Image,
-    StyleSheet,
-    KeyboardAvoidingView,
-    Platform,
-    Alert,
+    View,
 } from "react-native";
-import Svg, {Path} from "react-native-svg";
-import {Eye, EyeOff, Mail, LockKeyhole, ArrowRight, AlertTriangle} from "lucide-react-native";
-import {useAuth} from "../contexts/AuthContext";
+import Svg, { Path } from "react-native-svg";
+import KeyboardDismissableScrollView from "../../components/KeyboardDismissableScrollView";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function RegisterScreen({navigation}: any) {
     const {register} = useAuth();
@@ -40,8 +39,8 @@ export default function RegisterScreen({navigation}: any) {
     };
 
     return (
-        <KeyboardAvoidingView style={{flex: 1}} behavior={Platform.OS === "ios" ? "padding" : undefined}>
-            <SafeAreaView style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <KeyboardDismissableScrollView contentContainerStyle={styles.scrollView}>
                 <View style={styles.header}>
                     <Svg width="100%" height="100%" viewBox="0 5 390 10" style={styles.headerSvg}>
                         <Path d="M0 0 H390 V110 Q187.5 180 0 110 Z" fill="#6770E6"/>
@@ -120,12 +119,12 @@ export default function RegisterScreen({navigation}: any) {
                     <View style={styles.footer}>
                         <Text style={styles.footerText}>
                             Already have an account? <Text style={styles.footerLink}
-                                                           onPress={() => navigation.navigate("Login")}>Sign In.</Text>
+                                                   onPress={() => navigation.navigate("Login")}>Sign In.</Text>
                         </Text>
                     </View>
                 </View>
-            </SafeAreaView>
-        </KeyboardAvoidingView>
+            </KeyboardDismissableScrollView>
+        </SafeAreaView>
     );
 }
 
@@ -184,4 +183,7 @@ const styles = StyleSheet.create({
     footer: {alignItems: "center", marginTop: 32},
     footerText: {fontSize: 14, color: "#111827"},
     footerLink: {fontWeight: "600", color: "#6770E6"},
+    scrollView: {
+        flexGrow: 1,
+    },
 });

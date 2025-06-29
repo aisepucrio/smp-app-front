@@ -38,3 +38,14 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+# Android (React-Native / Expo prebuild)
+android/.gradle/
+android/.idea/
+android/local.properties
+# All Gradle/NDK build outputs inside any module
+android/**/build/
+android/**/.cxx/
+# Keystore files
+*.keystore
+android/**/debug.keystore
