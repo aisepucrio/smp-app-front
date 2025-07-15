@@ -30,11 +30,16 @@ export default function RegisterScreen({ navigation }: any) {
   const [secure2, setSecure2] = useState(true);
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
 
   const handleSignUp = async () => {
     const emailValid = /.+@.+\..+/.test(email);
     setEmailError(!emailValid);
-    if (!emailValid || password !== confirm) return;
+    const passwordsMatch = password === confirm;
+    setPasswordError(!passwordsMatch);
+    if (!emailValid || !passwordsMatch) return;
+    // if (!emailValid || password !== confirm) return;
     try {
       setLoading(true);
       await register(email, email.split("@")[0], password);
@@ -117,7 +122,12 @@ export default function RegisterScreen({ navigation }: any) {
               )}
             </TouchableOpacity>
           </View>
-
+            {passwordError && (
+              <View style={styles.errorRow}>
+                <AlertTriangle size={16} color="#f98b7d" />
+                <Text style={styles.errorText}>As senhas não conferem!</Text>
+              </View>
+            )}
           <Text style={[styles.label, { marginTop: 16 }]}>
             Password Confirmation
           </Text>
@@ -140,6 +150,13 @@ export default function RegisterScreen({ navigation }: any) {
               )}
             </TouchableOpacity>
           </View>
+
+          {passwordError && (
+            <View style={styles.errorRow}>
+              <AlertTriangle size={16} color="#f98b7d" />
+              <Text style={styles.errorText}>As senhas não conferem!</Text>
+            </View>
+          )}
 
           <TouchableOpacity
             style={styles.signUpButton}
