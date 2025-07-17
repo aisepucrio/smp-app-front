@@ -31,20 +31,66 @@ export default function RegisterScreen({ navigation }: any) {
   const [loading, setLoading] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
+  const [badUserError, setBadUserError] = useState(false);
+  const [badPasswordError, setBadPasswordError] = useState(false);
+  const [userExistsError, setUserExistsError] = useState(false);
+  const [serverError, setServerError] = useState("");
 
 
   const handleSignUp = async () => {
+    // Limpar erros anteriores
+    setEmailError(false);
+    setPasswordError(false);
+    setNetworkError(false);
+    setBadUserError(false);
+    setBadPasswordError(false);
+    setUserExistsError(false);
+    setServerError("");
+
+    // Validações locais
     const emailValid = /.+@.+\..+/.test(email);
     setEmailError(!emailValid);
     const passwordsMatch = password === confirm;
     setPasswordError(!passwordsMatch);
     if (!emailValid || !passwordsMatch) return;
-    // if (!emailValid || password !== confirm) return;
+
     try {
       setLoading(true);
       await register(email, email.split("@")[0], password);
     } catch (err: any) {
-      Alert.alert("Registration failed", err.message);
+      const errorMessage = err.message || "Unknown error";
+      
+      // Verificar se é erro de rede
+      if (errorMessage.includes("Network error") || 
+          errorMessage.includes("Request timed out") || 
+          errorMessage.includes("ECONNABORTED")) {
+        setNetworkError(true);
+        return;
+      }
+      
+      // Verificar tipos específicos de erro baseado na mensagem
+      if (errorMessage.includes("Bad request") || 
+          errorMessage.includes("Invalid email") || 
+          errorMessage.includes("Invalid user") ||
+          errorMessage.includes("User validation failed")) {
+        setBadUserError(true);
+      } else if (errorMessage.includes("password") && 
+                 (errorMessage.includes("weak") || 
+                  errorMessage.includes("too short") || 
+                  errorMessage.includes("invalid") ||
+                  errorMessage.includes("Password validation failed"))) {
+        setBadPasswordError(true);
+      } else if (errorMessage.includes("Conflict") || 
+                 errorMessage.includes("User already exists") || 
+                 errorMessage.includes("already registered") ||
+                 errorMessage.includes("email already in use") ||
+                 errorMessage.includes("duplicate")) {
+        setUserExistsError(true);
+      } else {
+        // Erro genérico do servidor
+        setServerError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
@@ -102,6 +148,27 @@ export default function RegisterScreen({ navigation }: any) {
             </View>
           )}
 
+          {networkError && (
+            <View style={styles.errorRow}>
+              <AlertTriangle size={16} color="#f98b7d" />
+              <Text style={styles.errorText}>Não foi possível conectar ao servidor. Verifique sua conexão!</Text>
+            </View>
+          )}
+
+          {badUserError && (
+            <View style={styles.errorRow}>
+              <AlertTriangle size={16} color="#f98b7d" />
+              <Text style={styles.errorText}>Email inválido ou já cadastrado!</Text>
+            </View>
+          )}
+
+          {userExistsError && (
+            <View style={styles.errorRow}>
+              <AlertTriangle size={16} color="#f98b7d" />
+              <Text style={styles.errorText}>Este usuário já existe!</Text>
+            </View>
+          )}
+
           <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
           <View style={styles.inputContainer}>
             <LockKeyhole size={18} stroke="#6770E6" />
@@ -126,6 +193,13 @@ export default function RegisterScreen({ navigation }: any) {
               <View style={styles.errorRow}>
                 <AlertTriangle size={16} color="#f98b7d" />
                 <Text style={styles.errorText}>As senhas não conferem!</Text>
+              </View>
+            )}
+            
+            {badPasswordError && (
+              <View style={styles.errorRow}>
+                <AlertTriangle size={16} color="#f98b7d" />
+                <Text style={styles.errorText}>Senha muito fraca! Use pelo menos 8 caracteres.</Text>
               </View>
             )}
           <Text style={[styles.label, { marginTop: 16 }]}>
@@ -155,6 +229,13 @@ export default function RegisterScreen({ navigation }: any) {
             <View style={styles.errorRow}>
               <AlertTriangle size={16} color="#f98b7d" />
               <Text style={styles.errorText}>As senhas não conferem!</Text>
+            </View>
+          )}
+
+          {serverError && (
+            <View style={styles.errorRow}>
+              <AlertTriangle size={16} color="#f98b7d" />
+              <Text style={styles.errorText}>Erro do servidor: {serverError}</Text>
             </View>
           )}
 
