@@ -5,10 +5,10 @@ const brandYellow = "#F6C758";
 export const Colors = {
   light: {
     text: "#FFFFFF",
-    background: primaryPurpleLight,
+    background: primaryPurple,
     tint: brandYellow,
     icon: "#FFFFFF",
-    card: primaryPurple,
+    card: primaryPurpleLight,
   },
   dark: {
     text: "#ECEDEE",

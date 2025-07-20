@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import RotatingDots from "../components/RotatingDots";
 
 export default function LoadingScreen() {
@@ -7,7 +7,6 @@ export default function LoadingScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.spinnerWrapper}>
         <RotatingDots size={600} dotRadius={60} durationMs={2000} />
-        <Text style={styles.label}>/// Loading ///</Text>
       </View>
     </SafeAreaView>
   );

@@ -1,21 +1,21 @@
 import {
-  AlertTriangle,
-  ArrowRight,
-  Eye,
-  EyeOff,
-  LockKeyhole,
-  Mail,
+    AlertTriangle,
+    ArrowRight,
+    Eye,
+    EyeOff,
+    LockKeyhole,
+    Mail,
 } from "lucide-react-native";
 import React, { useState } from "react";
 import {
-  Alert,
-  Image,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Alert,
+    Image,
+    SafeAreaView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import KeyboardDismissableScrollView from "../../components/KeyboardDismissableScrollView";
