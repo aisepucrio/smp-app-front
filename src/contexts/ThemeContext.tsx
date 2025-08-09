@@ -4,11 +4,13 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
-import { Appearance } from "react-native";
+import { Appearance, ColorSchemeName } from "react-native";
 
 export type ThemeVariant = "light" | "dark";
+type ThemePreference = ThemeVariant | "system";
 
 interface ThemeContextValue {
   theme: ThemeVariant;
@@ -19,29 +21,54 @@ const STORAGE_KEY = "themePreference";
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const systemScheme = Appearance.getColorScheme() ?? "light";
-  const [theme, setTheme] = useState<ThemeVariant>(systemScheme);
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [preference, setPreference] = useState<ThemePreference>("system");
+  const [theme, setTheme] = useState<ThemeVariant>((Appearance.getColorScheme() ?? "light") as ThemeVariant);
+  const mounted = useRef(false);
 
-  // Hydrate stored preference
   useEffect(() => {
     (async () => {
-      const saved = await AsyncStorage.getItem(STORAGE_KEY);
-      if (saved === "light" || saved === "dark") {
-        setTheme(saved);
-      }
+      try {
+        const saved = await AsyncStorage.getItem(STORAGE_KEY);
+        if (saved === "light" || saved === "dark" || saved === "system") {
+          setPreference(saved);
+        }
+      } catch {}
     })();
   }, []);
 
-  // Persist on change
   useEffect(() => {
-    AsyncStorage.setItem(STORAGE_KEY, theme).catch(() => {});
-  }, [theme]);
+    const updateFromSystem = (scheme: ColorSchemeName) => {
+      setTheme(((scheme ?? "light") as ThemeVariant));
+    };
+
+    if (preference === "system") {
+      updateFromSystem(Appearance.getColorScheme());
+      const sub = Appearance.addChangeListener(({ colorScheme }: any) => {
+        updateFromSystem(colorScheme);
+      });
+      return () => sub.remove();
+    } else {
+      setTheme(preference);
+    }
+  }, [preference]);
+
+  useEffect(() => {
+    if (!mounted.current) {
+      mounted.current = true;
+      return;
+    }
+    AsyncStorage.setItem(STORAGE_KEY, preference).catch(() => {});
+  }, [preference]);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+    setPreference((prev) => {
+      if (prev === "system") {
+        const system = Appearance.getColorScheme() ?? "light";
+        return (system === "light" ? "dark" : "light") as ThemePreference;
+      }
+      return prev === "light" ? "dark" : "light";
+    });
   }, []);
 
   return (
