@@ -7,19 +7,10 @@ import {
     Mail,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import {
-    Alert,
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import KeyboardDismissableScrollView from "../../components/KeyboardDismissableScrollView";
-import { useAuth } from "../contexts/AuthContext";
+import KeyboardDismissableScrollView from "@/components/KeyboardDismissableScrollView";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function RegisterScreen({ navigation }: any) {
   const { register } = useAuth();
@@ -110,7 +101,7 @@ export default function RegisterScreen({ navigation }: any) {
           </Svg>
           <View style={styles.headerImageWrapper}>
             <Image
-              source={require("../assets/owl.png")}
+              source={require("@/src/assets/owl.png")}
               style={styles.headerImage}
               resizeMode="contain"
             />

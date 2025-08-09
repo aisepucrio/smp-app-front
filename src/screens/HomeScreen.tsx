@@ -10,9 +10,9 @@ import {
 import { ThemedText } from "@/components/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import TeamCard from "../components/TeamCard";
-import { useAuth } from "../contexts/AuthContext";
-import { useTeams } from "../contexts/TeamsContext";
+import TeamCard from "@/src/components/TeamCard";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useTeams } from "@/src/contexts/TeamsContext";
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();

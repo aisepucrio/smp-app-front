@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import RotatingDots from "../components/RotatingDots";
+import RotatingDots from "@/src/components/RotatingDots";
 
 export default function LoadingScreen() {
   return (

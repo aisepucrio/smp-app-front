@@ -19,8 +19,8 @@ import {
   Mail,
 } from "lucide-react-native";
 import Svg, { Path } from "react-native-svg";
-import KeyboardDismissableScrollView from "../../components/KeyboardDismissableScrollView";
-import { useAuth } from "../contexts/AuthContext";
+import KeyboardDismissableScrollView from "@/components/KeyboardDismissableScrollView";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function LoginScreen({ navigation }: any) {
   const { login } = useAuth();
@@ -55,7 +55,7 @@ export default function LoginScreen({ navigation }: any) {
           </Svg>
           <View style={styles.headerImageWrapper}>
             <Image
-              source={require("../assets/owl.png")}
+              source={require("@/src/assets/owl.png")}
               style={styles.headerImage}
               resizeMode="contain"
             />
@@ -132,7 +132,7 @@ export default function LoginScreen({ navigation }: any) {
 
           <View style={styles.footer}>
             <Text style={styles.footerText}>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Text
                 style={styles.footerLink}
                 onPress={() => navigation.navigate("Register")}

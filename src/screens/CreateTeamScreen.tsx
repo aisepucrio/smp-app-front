@@ -14,10 +14,10 @@ import { ThemedText } from "@/components/ThemedText";
 import ArrowBackCircle from "@/components/ui/ArrowBackCircle";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import invitationsApi from "../api/invitationsApi";
-import usersApi from "../api/usersApi";
-import { useAuth } from "../contexts/AuthContext";
-import { useTeams } from "../contexts/TeamsContext";
+import invitationsApi from "@/src/api/invitationsApi";
+import usersApi from "@/src/api/usersApi";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useTeams } from "@/src/contexts/TeamsContext";
 
 export default function CreateTeamScreen() {
   const navigation = useNavigation<any>();

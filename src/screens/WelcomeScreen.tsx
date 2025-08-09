@@ -22,7 +22,7 @@ export default function WelcomeScreen({ navigation }: any) {
         <Text style={styles.subtitle}>Your daily mental health report!</Text>
 
         <Image
-          source={require("../assets/owl.png")}
+          source={require("@/src/assets/owl.png")}
           style={styles.image}
           resizeMode="contain"
         />
