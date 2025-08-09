@@ -1,4 +1,6 @@
-import { ArrowRight } from "lucide-react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 import React from "react";
 import {
     Dimensions,
@@ -13,13 +15,14 @@ import {
 const { width } = Dimensions.get("window");
 
 export default function WelcomeScreen({ navigation }: any) {
+  const theme = useColorScheme() ?? "light";
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
       <View style={styles.contentWrapper}>
-        <Text style={styles.title} numberOfLines={1} adjustsFontSizeToFit>
+        <Text style={[styles.title, { color: Colors[theme].text }]} numberOfLines={1} adjustsFontSizeToFit>
           Welcome to <Text style={styles.bold}>BuddyMents</Text>
         </Text>
-        <Text style={styles.subtitle}>Your daily mental health report!</Text>
+        <Text style={[styles.subtitle, { color: Colors[theme].icon }]}>Your daily mental health report!</Text>
 
         <Image
           source={require("@/src/assets/owl.png")}
@@ -30,11 +33,11 @@ export default function WelcomeScreen({ navigation }: any) {
         <View style={styles.buttonsWrapper}>
           <TouchableOpacity
             activeOpacity={0.85}
-            style={styles.primaryButton}
+            style={[styles.primaryButton, { backgroundColor: Colors[theme].tint }]}
             onPress={() => navigation.navigate("Register")}
           >
             <Text style={styles.primaryButtonText}>Get Started</Text>
-            <ArrowRight size={20} color="#05060B" style={{ marginLeft: 8 }} />
+            <Ionicons name="arrow-forward" size={20} color="#05060B" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -57,7 +60,6 @@ const IMAGE_SIZE = width * 0.8;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#7287D9",
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
@@ -74,7 +76,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
     fontSize: 32,
     lineHeight: 36,
-    color: "#FFFFFF",
     textAlign: "center",
   },
   bold: {
@@ -83,7 +84,6 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 16,
     fontSize: 16,
-    color: "#F7F7F7",
     textAlign: "center",
     maxWidth: 320,
   },
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButton: {
-    backgroundColor: "#FFCE5C",
     borderRadius: 28,
     paddingVertical: 16,
     paddingHorizontal: 32,

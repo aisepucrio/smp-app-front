@@ -1,11 +1,5 @@
-import {
-    AlertTriangle,
-    ArrowRight,
-    Eye,
-    EyeOff,
-    LockKeyhole,
-    Mail,
-} from "lucide-react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import React, { useState } from "react";
 import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
@@ -13,6 +7,14 @@ import KeyboardDismissableScrollView from "@/components/KeyboardDismissableScrol
 import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function RegisterScreen({ navigation }: any) {
+  const bg = useThemeColor({}, "authBackground");
+  const authText = useThemeColor({}, "authText");
+  const authLink = useThemeColor({}, "authLink");
+  const label = useThemeColor({}, "label");
+  const inputBg = useThemeColor({}, "inputBackground");
+  const inputText = useThemeColor({}, "inputText");
+  const tint = useThemeColor({}, "tint");
+  const card = useThemeColor({}, "card");
   const { register } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,7 +90,7 @@ export default function RegisterScreen({ navigation }: any) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: bg }]}>
       <KeyboardDismissableScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.header}>
           <Svg
@@ -97,7 +99,7 @@ export default function RegisterScreen({ navigation }: any) {
             viewBox="0 5 390 10"
             style={styles.headerSvg}
           >
-            <Path d="M0 0 H390 V110 Q187.5 180 0 110 Z" fill="#6770E6" />
+            <Path d="M0 0 H390 V110 Q187.5 180 0 110 Z" fill={card} />
           </Svg>
           <View style={styles.headerImageWrapper}>
             <Image
@@ -109,123 +111,124 @@ export default function RegisterScreen({ navigation }: any) {
         </View>
 
         <View style={styles.body}>
-          <Text style={styles.title}>
+          <Text style={[styles.title, { color: authText }]}>
             Sign Up{"\n"}
             <Text style={styles.titleBold}>BuddyMents</Text>
           </Text>
 
-          <Text style={styles.label}>Email Address</Text>
+          <Text style={[styles.label, { color: label }]}>Email Address</Text>
           <View
             style={[
               styles.inputContainer,
               emailError && { borderWidth: 2, borderColor: "#f98b7d" },
+              { backgroundColor: inputBg },
             ]}
           >
-            <Mail size={18} stroke="#6770E6" />
+            <Ionicons name="mail-outline" size={18} color={tint} />
             <TextInput
               placeholder="Enter your email…"
               placeholderTextColor="#9CA3AF"
               keyboardType="email-address"
               autoCapitalize="none"
-              style={styles.input}
+              style={[styles.input, { color: inputText }]}
               value={email}
               onChangeText={setEmail}
             />
           </View>
           {emailError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>Invalid Email Address!!!</Text>
             </View>
           )}
 
           {networkError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>Não foi possível conectar ao servidor. Verifique sua conexão!</Text>
             </View>
           )}
 
           {badUserError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>Email inválido ou já cadastrado!</Text>
             </View>
           )}
 
           {userExistsError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>Este usuário já existe!</Text>
             </View>
           )}
 
-          <Text style={[styles.label, { marginTop: 16 }]}>Password</Text>
-          <View style={styles.inputContainer}>
-            <LockKeyhole size={18} stroke="#6770E6" />
+          <Text style={[styles.label, { marginTop: 16, color: label }]}>Password</Text>
+          <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
+            <Ionicons name="lock-closed-outline" size={18} color={tint} />
             <TextInput
               placeholder="Enter your password…"
               placeholderTextColor="#9CA3AF"
               secureTextEntry={secure1}
               autoCapitalize="none"
-              style={styles.input}
+              style={[styles.input, { color: inputText }]}
               value={password}
               onChangeText={setPassword}
             />
             <TouchableOpacity onPress={() => setSecure1(!secure1)}>
               {secure1 ? (
-                <EyeOff size={18} stroke="#C4C4C4" />
+                <Ionicons name="eye-off-outline" size={18} color="#C4C4C4" />
               ) : (
-                <Eye size={18} stroke="#C4C4C4" />
+                <Ionicons name="eye-outline" size={18} color="#C4C4C4" />
               )}
             </TouchableOpacity>
           </View>
             {passwordError && (
               <View style={styles.errorRow}>
-                <AlertTriangle size={16} color="#f98b7d" />
+                <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
                 <Text style={styles.errorText}>As senhas não conferem!</Text>
               </View>
             )}
             
             {badPasswordError && (
               <View style={styles.errorRow}>
-                <AlertTriangle size={16} color="#f98b7d" />
+                <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
                 <Text style={styles.errorText}>Senha muito fraca! Use pelo menos 8 caracteres.</Text>
               </View>
             )}
-          <Text style={[styles.label, { marginTop: 16 }]}>
+          <Text style={[styles.label, { marginTop: 16, color: label }]}> 
             Password Confirmation
           </Text>
-          <View style={styles.inputContainer}>
-            <LockKeyhole size={18} stroke="#6770E6" />
+          <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
+            <Ionicons name="lock-closed-outline" size={18} color={tint} />
             <TextInput
               placeholder="Confirm your password…"
               placeholderTextColor="#9CA3AF"
               secureTextEntry={secure2}
               autoCapitalize="none"
-              style={styles.input}
+              style={[styles.input, { color: inputText }]}
               value={confirm}
               onChangeText={setConfirm}
             />
             <TouchableOpacity onPress={() => setSecure2(!secure2)}>
               {secure2 ? (
-                <EyeOff size={18} stroke="#C4C4C4" />
+                <Ionicons name="eye-off-outline" size={18} color="#C4C4C4" />
               ) : (
-                <Eye size={18} stroke="#C4C4C4" />
+                <Ionicons name="eye-outline" size={18} color="#C4C4C4" />
               )}
             </TouchableOpacity>
           </View>
 
           {passwordError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>As senhas não conferem!</Text>
             </View>
           )}
 
           {serverError && (
             <View style={styles.errorRow}>
-              <AlertTriangle size={16} color="#f98b7d" />
+              <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
               <Text style={styles.errorText}>Erro do servidor: {serverError}</Text>
             </View>
           )}
@@ -239,14 +242,14 @@ export default function RegisterScreen({ navigation }: any) {
             <Text style={styles.signUpText}>
               {loading ? "Signing…" : "Sign Up"}
             </Text>
-            <ArrowRight size={20} color="#fff" style={{ marginLeft: 8 }} />
+            <Ionicons name="arrow-forward" size={20} color="#fff" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>
+            <Text style={[styles.footerText, { color: authText }]}>
               Already have an account?{" "}
               <Text
-                style={styles.footerLink}
+                style={[styles.footerLink, { color: authLink }]}
                 onPress={() => navigation.navigate("Login")}
               >
                 Sign In.
@@ -260,7 +263,7 @@ export default function RegisterScreen({ navigation }: any) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F6C758" },
+  container: { flex: 1 },
   header: { width: "100%", height: 180, overflow: "hidden" },
   headerSvg: { position: "absolute", top: 0, left: 0 },
   headerImageWrapper: {
@@ -275,7 +278,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 28,
     fontWeight: "700",
-    color: "#111827",
     marginBottom: 8,
   },
   titleBold: { fontWeight: "800" },
@@ -284,7 +286,6 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontSize: 12,
     fontWeight: "600",
-    color: "#374151",
     letterSpacing: 0.5,
     textTransform: "uppercase",
   },
