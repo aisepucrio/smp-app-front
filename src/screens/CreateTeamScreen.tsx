@@ -18,6 +18,7 @@ import invitationsApi from "@/src/api/invitationsApi";
 import usersApi from "@/src/api/usersApi";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useTeams } from "@/src/contexts/TeamsContext";
+import { useTranslation } from "@/src/i18n";
 
 export default function CreateTeamScreen() {
   const navigation = useNavigation<any>();
@@ -29,9 +30,10 @@ export default function CreateTeamScreen() {
   const [invites, setInvites] = useState<InviteField[]>([{ value: "", status: "idle" }]);
   const [submitting, setSubmitting] = useState(false);
   const { createTeam, refresh } = useTeams();
+  const { t } = useTranslation();
 
   const handleCreate = async () => {
-    if (!name.trim()) return Alert.alert("Team name is required");
+    if (!name.trim()) return Alert.alert(t('teams.teamNameRequired'));
     const filteredInvites = invites.map((e) => e.value.trim()).filter(Boolean);
     setSubmitting(true);
     try {
@@ -49,10 +51,10 @@ export default function CreateTeamScreen() {
       }
 
       await refresh();
-      Alert.alert("Success", "Team created");
+      Alert.alert(t('teams.successTitle'), t('teams.created'));
       navigation.goBack();
     } catch (err: any) {
-      Alert.alert("Error", err.message || "Failed to create team");
+      Alert.alert(t('teams.errorTitle'), err.message || t('teams.createFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -75,26 +77,24 @@ export default function CreateTeamScreen() {
             color={Colors[theme].icon}
             onPress={() => navigation.goBack()}
           />
-          <ThemedText type="title" style={themedStyles.title}>
-            Create Team
-          </ThemedText>
+          <ThemedText type="title" style={themedStyles.title}>{t('teams.createTitle')}</ThemedText>
         </View>
 
-        <ThemedText style={themedStyles.label}>Team Name</ThemedText>
+        <ThemedText style={themedStyles.label}>{t('teams.nameLabel')}</ThemedText>
         <TextInput
-          placeholder="e.g. Avengers"
+          placeholder={t('teams.namePlaceholder')}
           value={name}
           onChangeText={setName}
           style={themedStyles.input}
           placeholderTextColor="#999"
         />
 
-        <ThemedText style={[themedStyles.label, { marginTop: 16 }]}>Invite members</ThemedText>
+        <ThemedText style={[themedStyles.label, { marginTop: 16 }]}>{t('teams.inviteLabel')}</ThemedText>
         {invites.map((invite, index) => (
           <View key={index} style={themedStyles.inviteRow}>
             <TextInput
               style={[themedStyles.input, { flex: 1 }]}
-              placeholder="Email or Username"
+              placeholder={t('teams.invitePlaceholder')}
               placeholderTextColor="#999"
               value={invite.value}
               onChangeText={(text) => {
@@ -173,9 +173,7 @@ export default function CreateTeamScreen() {
             size={20}
             color={Colors[theme].tint}
           />
-          <ThemedText style={{ color: Colors[theme].tint }}>
-            Add another
-          </ThemedText>
+          <ThemedText style={{ color: Colors[theme].tint }}>{t('teams.addAnother')}</ThemedText>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -184,9 +182,7 @@ export default function CreateTeamScreen() {
           activeOpacity={0.8}
           disabled={submitting}
         >
-          <ThemedText style={themedStyles.createText}>
-            {submitting ? "Creating..." : "Create"}
-          </ThemedText>
+          <ThemedText style={themedStyles.createText}>{submitting ? t('teams.creating') : t('teams.create')}</ThemedText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

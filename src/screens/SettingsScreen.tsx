@@ -16,10 +16,12 @@ import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useTheme } from "@/src/contexts/ThemeContext";
+import { useTranslation } from "@/src/i18n";
 
 export default function SettingsScreen() {
   const { user, logout } = useAuth();
   const { theme: currentTheme, toggleTheme } = useTheme();
+  const { t, locale, setLocale, languages } = useTranslation();
   const navigation = useNavigation<any>();
   const theme = useColorScheme() ?? "light";
 
@@ -27,7 +29,7 @@ export default function SettingsScreen() {
     try {
       await logout();
     } catch (err: any) {
-      Alert.alert("Logout failed", err.message || "Unexpected error");
+      Alert.alert(t('settings.logoutFailedTitle'), err.message || t('settings.unexpectedError'));
     }
   };
 
@@ -42,22 +44,16 @@ export default function SettingsScreen() {
             color={Colors[theme].icon}
             onPress={() => navigation.goBack()}
           />
-          <ThemedText type="title" style={styles.title}>
-            Settings
-          </ThemedText>
+          <ThemedText type="title" style={styles.title}>{t('settings.title')}</ThemedText>
         </View>
 
         <View style={styles.section}>
-          <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>
-            Account
-          </ThemedText>
+          <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>{t('settings.account')}</ThemedText>
           <ThemedText>{user?.email}</ThemedText>
         </View>
 
         <View style={styles.sectionRow}>
-          <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>
-            Dark Mode
-          </ThemedText>
+          <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>{t('settings.darkMode')}</ThemedText>
           <Switch
             value={currentTheme === "dark"}
             onValueChange={toggleTheme}
@@ -66,13 +62,37 @@ export default function SettingsScreen() {
           />
         </View>
 
+        <View style={styles.sectionRow}>
+          <ThemedText style={[styles.label, { color: Colors[theme].icon }]}>{t('settings.language')}</ThemedText>
+          <View style={{ flexDirection: 'row', gap: 8 }}>
+            {languages.map((l) => (
+              <TouchableOpacity
+                key={l.code}
+                onPress={() => setLocale(l.code)}
+                style={{
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  borderColor: l.code === locale ? Colors[theme].tint : '#ccc',
+                }}
+                activeOpacity={0.7}
+              >
+                <ThemedText style={{ color: l.code === locale ? Colors[theme].tint : Colors[theme].text }}>
+                  {l.label}
+                </ThemedText>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+
         <TouchableOpacity
           style={[styles.logoutBtn, { backgroundColor: Colors[theme].tint }]}
           onPress={handleLogout}
           activeOpacity={0.8}
         >
           <Ionicons name="log-out-outline" size={20} color="#fff" />
-          <ThemedText style={styles.logoutText}>Logout</ThemedText>
+          <ThemedText style={styles.logoutText}>{t('settings.logout')}</ThemedText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

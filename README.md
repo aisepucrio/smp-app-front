@@ -31,3 +31,11 @@ A cross-platform React-Native / Expo app for tracking team mental health and pro
 ```bash
 yarn lint      # eslint ts/tsx/js
 ```
+
+## 🌍 Internationalization (i18n)
+
+- Provider: `src/i18n` exports `I18nProvider` and `useTranslation()`.
+- Locales: `src/i18n/locales/en.ts`, `src/i18n/locales/pt.ts`.
+- Usage: `const { t } = useTranslation();` then `t('namespace.key', { name: 'Alice' })`.
+- Persistence: selected language stored in `AsyncStorage` under `locale`; defaults to device locale (en/pt).
+- UI: language selector available in `Settings` screen.

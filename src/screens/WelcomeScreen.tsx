@@ -14,15 +14,18 @@ import {
 
 const { width } = Dimensions.get("window");
 
+import { useTranslation } from "@/src/i18n";
+
 export default function WelcomeScreen({ navigation }: any) {
   const theme = useColorScheme() ?? "light";
+  const { t } = useTranslation();
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: Colors[theme].background }]}>
       <View style={styles.contentWrapper}>
         <Text style={[styles.title, { color: Colors[theme].text }]} numberOfLines={1} adjustsFontSizeToFit>
-          Welcome to <Text style={styles.bold}>BuddyMents</Text>
+          {t('welcome.title', { appName: t('common.appName') })}
         </Text>
-        <Text style={[styles.subtitle, { color: Colors[theme].icon }]}>Your daily mental health report!</Text>
+        <Text style={[styles.subtitle, { color: Colors[theme].icon }]}>{t('welcome.subtitle')}</Text>
 
         <Image
           source={require("@/src/assets/owl.png")}
@@ -36,7 +39,7 @@ export default function WelcomeScreen({ navigation }: any) {
             style={[styles.primaryButton, { backgroundColor: Colors[theme].tint }]}
             onPress={() => navigation.navigate("Register")}
           >
-            <Text style={styles.primaryButtonText}>Get Started</Text>
+            <Text style={styles.primaryButtonText}>{t('welcome.getStarted')}</Text>
             <Ionicons name="arrow-forward" size={20} color="#05060B" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
@@ -45,9 +48,7 @@ export default function WelcomeScreen({ navigation }: any) {
             style={styles.secondaryButton}
             onPress={() => navigation.navigate("Login")}
           >
-            <Text style={styles.secondaryButtonText}>
-              I already have an account
-            </Text>
+            <Text style={styles.secondaryButtonText}>{t('welcome.haveAccount')}</Text>
           </TouchableOpacity>
         </View>
       </View>

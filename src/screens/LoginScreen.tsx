@@ -15,6 +15,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import Svg, { Path } from "react-native-svg";
 import KeyboardDismissableScrollView from "@/components/KeyboardDismissableScrollView";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useTranslation } from "@/src/i18n";
 
 export default function LoginScreen({ navigation }: any) {
   const bg = useThemeColor({}, "authBackground");
@@ -27,18 +28,19 @@ export default function LoginScreen({ navigation }: any) {
   const tint = useThemeColor({}, "tint");
   const card = useThemeColor({}, "card");
   const { login } = useAuth();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secure, setSecure] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async () => {
-    if (!email || !password) return Alert.alert("Error", "Fill in both fields");
+    if (!email || !password) return Alert.alert(t('alerts.errorTitle'), t('alerts.fillFields'));
     try {
       setLoading(true);
       await login(email, password);
     } catch (err: any) {
-      Alert.alert("Login failed", err.message);
+      Alert.alert(t('alerts.loginFailed'), err.message);
     } finally {
       setLoading(false);
     }
@@ -67,15 +69,15 @@ export default function LoginScreen({ navigation }: any) {
 
         <View style={styles.body}>
           <Text style={[styles.title, { color: authText }]}>
-            Sign In{"\n"}
-            <Text style={styles.titleBold}>BuddyMents</Text>
+            {t('auth.signIn')}{"\n"}
+            <Text style={styles.titleBold}>{t('common.appName')}</Text>
           </Text>
 
-          <Text style={[styles.label, { color: label }]}>Email Address</Text>
+          <Text style={[styles.label, { color: label }]}>{t('auth.emailLabel')}</Text>
           <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
             <Ionicons name="mail-outline" size={18} color={tint} />
             <TextInput
-              placeholder="you@example.com"
+              placeholder={t('auth.emailPlaceholder')}
               placeholderTextColor="#9CA3AF"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -85,11 +87,11 @@ export default function LoginScreen({ navigation }: any) {
             />
           </View>
 
-          <Text style={[styles.label, { marginTop: 16, color: label }]}>Password</Text>
+          <Text style={[styles.label, { marginTop: 16, color: label }]}>{t('auth.passwordLabel')}</Text>
           <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
             <Ionicons name="lock-closed-outline" size={18} color={tint} />
             <TextInput
-              placeholder="Enter your password…"
+              placeholder={t('auth.passwordPlaceholder')}
               placeholderTextColor="#9CA3AF"
               secureTextEntry={secure}
               autoCapitalize="none"
@@ -113,7 +115,7 @@ export default function LoginScreen({ navigation }: any) {
             disabled={loading}
           >
             <Text style={styles.signInButtonText}>
-              {loading ? "Signing…" : "Sign In"}
+              {loading ? t('auth.signing') : t('auth.signIn')}
             </Text>
             <Ionicons name="arrow-forward" size={20} color="#fff" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
@@ -135,16 +137,16 @@ export default function LoginScreen({ navigation }: any) {
 
           <View style={styles.footer}>
             <Text style={[styles.footerText, { color: authText }]}>
-              Don&apos;t have an account?{" "}
+              {t('auth.needAccount')} {" "}
               <Text
                 style={[styles.footerLink, { color: authLink }]}
                 onPress={() => navigation.navigate("Register")}
               >
-                Sign Up.
+                {t('auth.signUpLink')}
               </Text>
             </Text>
             <TouchableOpacity>
-              <Text style={styles.forgotPassword}>Forgot Password</Text>
+              <Text style={styles.forgotPassword}>{t('auth.forgotPassword')}</Text>
             </TouchableOpacity>
           </View>
         </View>

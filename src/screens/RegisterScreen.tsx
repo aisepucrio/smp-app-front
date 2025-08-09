@@ -5,6 +5,7 @@ import { Image, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, Vie
 import Svg, { Path } from "react-native-svg";
 import KeyboardDismissableScrollView from "@/components/KeyboardDismissableScrollView";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useTranslation } from "@/src/i18n";
 
 export default function RegisterScreen({ navigation }: any) {
   const bg = useThemeColor({}, "authBackground");
@@ -16,6 +17,7 @@ export default function RegisterScreen({ navigation }: any) {
   const tint = useThemeColor({}, "tint");
   const card = useThemeColor({}, "card");
   const { register } = useAuth();
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -112,11 +114,11 @@ export default function RegisterScreen({ navigation }: any) {
 
         <View style={styles.body}>
           <Text style={[styles.title, { color: authText }]}>
-            Sign Up{"\n"}
-            <Text style={styles.titleBold}>BuddyMents</Text>
+            {t('auth.signUp')}{"\n"}
+            <Text style={styles.titleBold}>{t('common.appName')}</Text>
           </Text>
 
-          <Text style={[styles.label, { color: label }]}>Email Address</Text>
+          <Text style={[styles.label, { color: label }]}>{t('auth.emailLabel')}</Text>
           <View
             style={[
               styles.inputContainer,
@@ -126,7 +128,7 @@ export default function RegisterScreen({ navigation }: any) {
           >
             <Ionicons name="mail-outline" size={18} color={tint} />
             <TextInput
-              placeholder="Enter your email…"
+              placeholder={t('auth.emailPlaceholderAlt')}
               placeholderTextColor="#9CA3AF"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -138,36 +140,36 @@ export default function RegisterScreen({ navigation }: any) {
           {emailError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>Invalid Email Address!!!</Text>
+              <Text style={styles.errorText}>{t('auth.invalidEmail')}</Text>
             </View>
           )}
 
           {networkError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>Não foi possível conectar ao servidor. Verifique sua conexão!</Text>
+              <Text style={styles.errorText}>{t('auth.networkError')}</Text>
             </View>
           )}
 
           {badUserError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>Email inválido ou já cadastrado!</Text>
+              <Text style={styles.errorText}>{t('auth.badUserError')}</Text>
             </View>
           )}
 
           {userExistsError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>Este usuário já existe!</Text>
+              <Text style={styles.errorText}>{t('auth.userExistsError')}</Text>
             </View>
           )}
 
-          <Text style={[styles.label, { marginTop: 16, color: label }]}>Password</Text>
+          <Text style={[styles.label, { marginTop: 16, color: label }]}>{t('auth.passwordLabel')}</Text>
           <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
             <Ionicons name="lock-closed-outline" size={18} color={tint} />
             <TextInput
-              placeholder="Enter your password…"
+              placeholder={t('auth.passwordPlaceholder')}
               placeholderTextColor="#9CA3AF"
               secureTextEntry={secure1}
               autoCapitalize="none"
@@ -186,23 +188,23 @@ export default function RegisterScreen({ navigation }: any) {
             {passwordError && (
               <View style={styles.errorRow}>
                 <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-                <Text style={styles.errorText}>As senhas não conferem!</Text>
+                <Text style={styles.errorText}>{t('auth.passwordsMismatch')}</Text>
               </View>
             )}
             
             {badPasswordError && (
               <View style={styles.errorRow}>
                 <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-                <Text style={styles.errorText}>Senha muito fraca! Use pelo menos 8 caracteres.</Text>
+                <Text style={styles.errorText}>{t('auth.weakPassword')}</Text>
               </View>
             )}
-          <Text style={[styles.label, { marginTop: 16, color: label }]}> 
-            Password Confirmation
+          <Text style={[styles.label, { marginTop: 16, color: label }]}>
+            {t('auth.passwordConfirmLabel')}
           </Text>
           <View style={[styles.inputContainer, { backgroundColor: inputBg }]}>
             <Ionicons name="lock-closed-outline" size={18} color={tint} />
             <TextInput
-              placeholder="Confirm your password…"
+              placeholder={t('auth.passwordConfirmPlaceholder')}
               placeholderTextColor="#9CA3AF"
               secureTextEntry={secure2}
               autoCapitalize="none"
@@ -222,14 +224,14 @@ export default function RegisterScreen({ navigation }: any) {
           {passwordError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>As senhas não conferem!</Text>
+              <Text style={styles.errorText}>{t('auth.passwordsMismatch')}</Text>
             </View>
           )}
 
           {serverError && (
             <View style={styles.errorRow}>
               <Ionicons name="alert-circle-outline" size={16} color="#f98b7d" />
-              <Text style={styles.errorText}>Erro do servidor: {serverError}</Text>
+              <Text style={styles.errorText}>{t('settings.unexpectedError')}: {serverError}</Text>
             </View>
           )}
 
@@ -239,20 +241,18 @@ export default function RegisterScreen({ navigation }: any) {
             onPress={handleSignUp}
             disabled={loading}
           >
-            <Text style={styles.signUpText}>
-              {loading ? "Signing…" : "Sign Up"}
-            </Text>
+            <Text style={styles.signUpText}>{loading ? t('auth.signing') : t('auth.signUp')}</Text>
             <Ionicons name="arrow-forward" size={20} color="#fff" style={{ marginLeft: 8 }} />
           </TouchableOpacity>
 
           <View style={styles.footer}>
             <Text style={[styles.footerText, { color: authText }]}>
-              Already have an account?{" "}
+              {t('auth.haveAccount')} {" "}
               <Text
                 style={[styles.footerLink, { color: authLink }]}
                 onPress={() => navigation.navigate("Login")}
               >
-                Sign In.
+                {t('auth.signInLink')}
               </Text>
             </Text>
           </View>

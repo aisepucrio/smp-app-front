@@ -4,6 +4,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TeamDto } from "../teams/types";
+import { useTranslation } from "@/src/i18n";
 
 interface Props {
   team: TeamDto;
@@ -13,6 +14,7 @@ interface Props {
 export default function TeamCard({ team, onPress }: Props) {
   const theme = useColorScheme() ?? "light";
   const themedStyles = styles(theme);
+  const { t } = useTranslation();
 
   return (
     <TouchableOpacity
@@ -25,7 +27,7 @@ export default function TeamCard({ team, onPress }: Props) {
         {team.name}
       </ThemedText>
       <ThemedText style={themedStyles.count}>
-        {team.membersCount} members
+        {t('teams.membersCount', { count: team.membersCount })}
       </ThemedText>
     </TouchableOpacity>
   );

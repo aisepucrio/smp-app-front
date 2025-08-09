@@ -10,6 +10,7 @@ import MainTabs from "@/src/navigation/MainTabs";
 import LoginScreen from "@/src/screens/LoginScreen";
 import RegisterScreen from "@/src/screens/RegisterScreen";
 import WelcomeScreen from "@/src/screens/WelcomeScreen";
+import { I18nProvider } from "@/src/i18n";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,12 +53,14 @@ function RootNavigator() {
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <TeamsProvider>
-          <RootNavigator />
-        </TeamsProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <I18nProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <TeamsProvider>
+            <RootNavigator />
+          </TeamsProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </I18nProvider>
   );
 }

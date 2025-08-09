@@ -13,6 +13,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import TeamCard from "@/src/components/TeamCard";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useTeams } from "@/src/contexts/TeamsContext";
+import { useTranslation } from "@/src/i18n";
 
 export default function HomeScreen() {
   const navigation = useNavigation<any>();
@@ -20,6 +21,7 @@ export default function HomeScreen() {
   const theme = useColorScheme() ?? "light";
   const { user } = useAuth();
   const { teams, loading, refresh } = useTeams();
+  const { t } = useTranslation();
 
   const renderItem = useCallback(
     ({ item }: any) => (
@@ -42,7 +44,9 @@ export default function HomeScreen() {
     >
       <View style={styles.header}>
         <ThemedText type="title" style={styles.greeting}>
-          Hi, {user?.userName || "there"}
+          {user?.userName
+            ? t('home.greeting', { name: user.userName })
+            : t('home.greetingFallback')}
         </ThemedText>
         <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
           <Ionicons
@@ -70,10 +74,8 @@ export default function HomeScreen() {
             onPress={() => navigation.navigate("CreateTeam")}
           >
             <Ionicons name="add" size={32} color={Colors[theme].tint} />
-            <ThemedText
-              style={[styles.createLabel, { color: Colors[theme].tint }]}
-            >
-              Create New Team
+            <ThemedText style={[styles.createLabel, { color: Colors[theme].tint }]}>
+              {t('home.createTeamCta')}
             </ThemedText>
           </TouchableOpacity>
         }
